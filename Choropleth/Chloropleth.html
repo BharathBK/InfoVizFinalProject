@@ -46,91 +46,6 @@ text {
 
     </head>
     <body>
-   <script type="text/javascript">
-      var year1 = '2000';
-      var cat = 'highschoolgrad.csv';
-      function updateMap(a){
-
-           cat = a;
-
-        d3.select('#map').html("");
-
-       var map=d3.geomap.choropleth().geofile('USA.json').projection(d3.geo.albersUsa).column(year1).unitId('fips').scale(1000).legend(true);
-
-          if(a=="highschoolgrad.csv"){
-            d3.csv('highschoolgrad.csv', function(error, data) {
-            d3.select('#map')
-                .datum(data)
-                .call(map.draw,map);
-            });
-
-
-        }
-
-        if(a=="bachelorgrad.csv"){
-          d3.csv('bachelorgrad.csv', function(error, data) {
-            d3.select('#map')
-                .datum(data)
-                .call(map.draw,map);
-            });
-        }
-
-        if(a=="advancedgrad.csv"){
-          d3.csv('advancedgrad.csv', function(error, data) {
-            d3.select('#map')
-                .datum(data)
-                .call(map.draw,map);
-            });
-        }
-}
-     function changeYear(yr){
-          year1 = yr;
-          updateMap(cat);
-        }
-   </script>
-
-
-<div style="z-index:2">
-  <h3 align="center">Select Year</h3>
-
-  <form align="center">
-    <label class="radio-inline">
-      <input type="radio" onchange="changeYear(this.value)" value="2000" name="optradio" checked="true">2000
-    </label>
-    <label  class="radio-inline">
-      <input  type="radio" onchange="changeYear(this.value)" value="2006" name="optradio">2006
-    </label>
-    <label >
-      <input type="radio" onchange="changeYear(this.value)" value="2007" name="optradio">2007
-    </label>
-    <label >
-      <input type="radio" onchange="changeYear(this.value)"  value="2008" name="optradio">2008
-    </label>
-    <label >
-      <input type="radio" name="optradio" onchange="changeYear(this.value)" value="2009">2009
-    </label>
-  </form>
-
-
-</div>
-
-<div style="z-index:1;margin-left: 311px;position:absolute;margin-top: -18px;" >
-  <h3 align="center">Select Category</h3>
-
-  <form align="center">
-    <label class="radio-inline">
-      <input id="radio" type="radio" onchange="updateMap(this.value)" value="highschoolgrad.csv" name="optradio" checked="true">a High School degree or more
-    </label>
-    <label  class="radio-inline">
-      <input id ="radio" type="radio" onchange="updateMap(this.value)" value="bachelorgrad.csv" name="optradio">a Bachelor's degree or more
-    </label>
-    <label >
-      <input id ="radio" type="radio" onchange="updateMap(this.value)" value="advancedgrad.csv" name="optradio">an Advanced degree or more
-    </label>
-
-  </form>
-
-</div>
 
       <div id="map" style="margin-top:-20px;height:150" ></div>
     </body>
@@ -138,12 +53,12 @@ text {
 
         var geofile=d3.geomap.choropleth().geofile('USA.json');
         var projection=geofile.projection(d3.geo.albersUsa);
-        var year=projection.column('2000');
+        var year=projection.column('1938');
         var unitId=year.unitId('fips');
         var scale=unitId.scale(1000);
         var legend=scale.legend(true);
 
-            d3.csv('highschoolgrad.csv', function(error, data) {
+            d3.csv('wctycho.csv', function(error, data) {
             d3.select('#map')
                 .datum(data)
                 .call(geofile.draw,geofile);
