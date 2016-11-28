@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Circular Heat Chart about Frequence of UFO occurrence</title>
+        <meta charset="UTF-8">
+        
+         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+    </head>
+   
+      
+        <script src="circularHeatChart.js" charset="utf-8"></script>
+        <script src="d3.v3.min.js" charset="utf-8"></script>
+        
+	<h3>Whooping Cough </h3>
+	
+		<div id="chartend" >
+			
+		</div>
+        <div id="infoend">Put mouse over image to check value</div> </br>
+		<h3>Whooping Cough Short</h3>
+        <div id="chartend" >
+		
+        <div id="chart1" >
+			
+		</div>
+        <div id="info1">Put mouse over image to check value</div> </br>
+		<h3>Whooping Cough Short</h3>
+        <div id="chartshort" >
+			
+		</div>
+        <div id="infoshort">Put mouse over image to check value</div> </br>
+        <h3>Whooping Cough by Season</h3>
+        <div id="chart2"></div>
+        <div id="info2">Put mouse over image to check value</div> 
+        <h3>Scarlet Fever</h3>
+        <div id="sf1" >
+			
+		</div>
+        <div id="sfinfo1">Put mouse over image to check value</div> </br>
+		<h3>Scarlet Fever by Season</h3>
+        <div id="sf2"></div>
+        <div id="sfinfo2">Put mouse over image to check value</div> 
+		
+		
+		 <h3>Measles</h3>
+		 <div id="m1end" >
+			
+		</div>
+        <div id="minfo1end">Put mouse over image to check value</div> </br>
+		
+        <div id="m1" >
+			
+		</div>
+        <div id="minfo1">Put mouse over image to check value</div> </br>
+		<h3></h3>
+		
+        <div id="m2"></div>
+        <div id="minfo2">Put mouse over image to check value</div> 
+        <script>
+		
+		d3.json('wcdata_end.json', function(wcEnd) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(20)
+                    .innerRadius(20)
+                    .numSegments(12)
+					.range(['white', '#990000'])
+                    .radialLabels(["1970", "1980", "1990", "2000", "2010"])
+                    .segmentLabels(months);
+					
+                d3.select('#chartend')
+                    .selectAll('svg')
+                    .data([wcEnd.data])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#chartend path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#infoend").text(d1.month +'/' +d1.year +' has value ' + d1.number);
+                });
+            });
+            d3.json('wcdata.json', function(wcData) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                //var years = ["1920", "1930", "1940", "1950", "1970", "1980", "1990", "2000", "2010"];
+               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.val2;})
+                    .segmentHeight(20)
+                    .innerRadius(20)
+                    .numSegments(12)
+					.domain([0,20])
+                    .range(['white', '#990000'])
+                    .radialLabels(["1920", "1930", "1940", "1950", "1970", "1980", "1990", "2000", "2010"])
+                    .segmentLabels(months);
+					
+                d3.select('#chart1')
+                    .selectAll('svg')
+                    .data([wcData.data])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#chart1 path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#info1").text(d1.month +'/' +d1.year +' has value ' + d1.number);
+                });
+            });
+			
+			d3.json('wcdatashort.json', function(wcshortData) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                //var years = ["1920", "1930", "1940", "1950", "1970", "1980", "1990", "2000", "2010"];
+               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(30)
+                    .innerRadius(20)
+                    .numSegments(12)
+					.range(['white', '#990000'])
+                    .radialLabels([ "1930", "1940", "1950"])
+                    .segmentLabels(months);
+					
+                d3.select('#chartshort')
+                    .selectAll('svg')
+                    .data([wcshortData.data])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#chartshort path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#infoshort").text(d1.month +'/' +d1.year +' has value ' + d1.number);
+                });
+            });
+			
+			 d3.json('wcsfdata.json', function(wcsfData) {
+                var season = ["Winter", "Spring", "Summer", "Autumn"];
+                var decades = ["1920", "1930", "1940", "1950", "1970", "1980", "1990", "2000", "2010"];
+               
+                var chart2 = circularHeatChart()
+                    .accessor(function(d1) {return d1.val;})
+                    .segmentHeight(30)
+                    .innerRadius(20)
+                    .numSegments(9)
+					.domain([0,30])
+                    .range(['white', '#990000'])
+                    .radialLabels(season)
+                    .segmentLabels(decades);
+					
+                d3.select('#chart2')
+                    .selectAll('svg')
+                    .data([wcsfData.sdata])
+                    .enter()
+                    .append('svg')
+                    .call(chart2)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#chart2 path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#info2").text(d1.season +" of " +d1.decade + 'has value ' + d1.number);
+                });
+            });
+			
+			
+		d3.json('sfmdata.json', function(sfData) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                var years = ["1920", "1930", "1940", "1950", "1960"];
+               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(30)
+                    .innerRadius(20)
+                    .numSegments(12)
+					//.domain([0,20])
+                    .range(['white', '#1f7a1f'])
+                    .radialLabels(["1920", "1930", "1940", "1950", "1960"])
+                    .segmentLabels(months);
+					
+                d3.select('#sf1')
+                    .selectAll('svg')
+                    .data([sfData.data])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#sf1 path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#sfinfo1").text(d1.month +"/" +d1.decade + 's has value ' + d1.number);
+                });
+            });
+			 d3.json('sfsdata.json', function(sfsData) {
+                var season = ["Winter", "Spring", "Summer", "Autumn"];
+                var decades = ["1920", "1930", "1940", "1950", "1960"];
+               
+                var chart2 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(30)
+                    .innerRadius(20)
+                    .numSegments(5)
+					//.domain([0,30])
+                    .range(['white', '#1f7a1f'])
+                    .radialLabels(season)
+                    .segmentLabels(decades);
+					
+                d3.select('#sf2')
+                    .selectAll('svg')
+                    .data([sfsData.datasf])
+                    .enter()
+                    .append('svg')
+                    .call(chart2)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#sf2 path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#sfinfo2").text(d1.season +" of " +d1.decade + 'has value ' + d1.number);
+                });
+            }); 
+			
+			d3.json('mdata_end.json', function(mEnd) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                var decades = ["1980", "1990", "2000"];
+               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(20)
+                    .innerRadius(20)
+                    .numSegments(12)
+					.range(['white', '#002080'])
+                    .radialLabels(decades)
+                    .segmentLabels(months);
+					
+                d3.select('#m1end')
+                    .selectAll('svg')
+                    .data([mEnd.mdata])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#m1end path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#minfo1end").text(d1.month +"/" +d1.decade + 's has value ' + d1.number);
+                });
+            });
+			
+			d3.json('mdata.json', function(mData) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                var decades = ["1920", "1930", "1940", "1950", "1960", "1970", "1980", "1990", "2000"];
+               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(20)
+                    .innerRadius(20)
+                    .numSegments(12)
+					//.domain([0,20])
+                    .range(['white', '#002080'])
+                    .radialLabels(decades)
+                    .segmentLabels(months);
+					
+                d3.select('#m1')
+                    .selectAll('svg')
+                    .data([mData.mdata])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#m1 path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#minfo1").text(d1.month +"/" +d1.decade + 's has value ' + d1.number);
+                });
+            });
+			 d3.json('msdata.json', function(msData) {
+                var season = ["Winter", "Spring", "Summer", "Autumn"];
+                var decades = ["1920", "1930", "1940", "1950", "1960", "1970", "1980", "1990", "2000"];
+               
+                var chart2 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(30)
+                    .innerRadius(20)
+                    .numSegments(9)
+					//.domain([0,30])
+                    .range(['white', '#002080'])
+                    .radialLabels(season)
+                    .segmentLabels(decades);
+					
+                d3.select('#m2')
+                    .selectAll('svg')
+                    .data([msData.msdata])
+                    .enter()
+                    .append('svg')
+                    .call(chart2)
+					.style("width", "550px")
+					.style("height", "550px");
+                d3.selectAll("#m2 path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#minfo2").text(d1.season +" of " +d1.decade + 'has value ' + d1.number);
+                });
+            });
+        </script>
+        
+    </body>
+</html>
