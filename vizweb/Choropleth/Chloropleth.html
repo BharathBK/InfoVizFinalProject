@@ -1,0 +1,69 @@
+<html>
+<style>
+
+.ui-content{
+  height: 10px;
+}
+text {
+  fill: #333;
+  font-size: 12px; }
+
+.svg{
+  margin-top: -250px;
+}
+.background {
+  fill: none;
+  pointer-events: all; }
+.unit {
+  cursor: pointer;
+  fill: #ccc;
+  stroke: #000;
+  stroke-width: 0.4px; }
+
+.legend-bg {
+  fill: #fff;
+  fill-opacity: 0.8;
+
+}
+
+.legend-bar {
+  stroke: #333;
+  stroke-width: 1px; }
+
+#radio {
+  font-size: 25px;
+}
+
+
+
+</style>
+    <head>
+      <h2 align="center"> United States Education Attainment </h2>
+        <meta charset="utf-8">
+
+        <script src="d3.geomap.dependencies.min.js"></script>
+        <script src="d3.geomap.min.js"></script>
+
+    </head>
+    <body>
+
+      <div id="map" style="margin-top:-20px;height:150" ></div>
+    </body>
+     <script>
+
+        var geofile=d3.geomap.choropleth().geofile('USA.json');
+        var projection=geofile.projection(d3.geo.albersUsa);
+        var year=projection.column('1938');
+        var unitId=year.unitId('fips');
+        var scale=unitId.scale(1000);
+        var legend=scale.legend(true);
+
+            d3.csv('wctycho.csv', function(error, data) {
+            d3.select('#map')
+                .datum(data)
+                .call(geofile.draw,geofile);
+            });
+
+        </script>
+
+</html>

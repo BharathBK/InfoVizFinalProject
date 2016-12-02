@@ -1,0 +1,94 @@
+<html>
+<style>
+
+.ui-content{
+  height: 10px;
+}
+text {
+  fill: #333;
+  font-size: 12px; }
+
+.svg{
+  margin-top: -300px;
+}
+.background {
+  fill: none;
+  pointer-events: all; }
+.unit {
+  cursor: pointer;
+  fill: #ccc;
+  stroke: #000;
+  stroke-width: 0.4px; }
+
+.legend-bg {
+  fill: #fff;
+  fill-opacity: 0.8;
+
+}
+
+.legend-bar {
+  stroke: #333;
+  stroke-width: 1px; }
+
+#radio {
+  font-size: 25px;
+}
+
+
+
+</style>
+    <head>
+      <h2 align="center"> United States Education Attainment </h2>
+        <meta charset="utf-8">
+		<input id="slider" type="range" min="1940" max="2010" value="2014" step="10" />
+
+		<span id="range">1937</span>
+
+        <script src="d3.geomap.dependencies.min.js"></script>
+        <script src="d3.geomap.min.js"></script>
+		
+
+    </head>
+    <body>
+
+      <div id="map" style="margin-top:-0px;height:150" ></div>
+    </body>
+	
+	<script type="text/javascript">
+	
+onload = function() {
+  var $ = function(id) { return document.getElementById(id); };
+  $('slider').oninput = function() { $('range').innerHTML = this.value; };
+  $('slider').oninput();
+};
+
+	</script>
+	
+     <script>
+		//d3.slider().axis(true).min(1937).max(2010).step(1);
+		var year, unitId, scale, legend;
+        var geofile=d3.geomap.choropleth().geofile('USA.json');
+        var projection=geofile.projection(d3.geo.albersUsa);
+		//console.log(slider.value());
+		
+		d3.selectAll("input").on("change", function change() {
+		d3.selectAll("svg > *").remove();
+				var	value = this.value;
+        year=projection.column(value.toString());
+		
+		
+        console.log(year);
+		unitId=year.unitId('fips');
+        scale=unitId.scale(1000);
+        legend=scale.legend(true);
+		
+		
+            d3.csv('wctycho.csv', function(error, data) {
+            d3.select('#map')
+                .datum(data)
+                .call(geofile.draw,geofile);
+            });
+});
+        </script>
+
+</html>
