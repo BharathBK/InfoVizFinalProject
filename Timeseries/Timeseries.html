@@ -1,0 +1,22 @@
+<html>
+<div id="chartContainer">
+  <script src="/d3.v3.4.8.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
+  <script type="text/javascript">
+    var svg = dimple.newSvg("#chartContainer", 590, 400);
+    d3.tsv("WhoopingCoughDecadeMonth.tsv", function (data) {
+     // data = dimple.filterData(data, "Owner", ["Aperture", "Black Mesa"])
+      var myChart = new dimple.chart(svg, data);
+      myChart.setBounds(60, 30, 505, 305);
+      var x = myChart.addCategoryAxis("x", "Year");
+      x.addOrderRule("month");
+      myChart.addMeasureAxis("y", "Cases");
+      var s = myChart.addSeries("Whooping Cough", dimple.plot.line);
+      s.interpolation = "cardinal";
+	  s.lineMarkers = true;
+      myChart.addLegend(60, 10, 500, 20, "right");
+      myChart.draw();
+    });
+  </script>
+</div>
+</html>
