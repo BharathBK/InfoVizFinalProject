@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+   <head>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      <title>Project Tycho | The Rise &amp; Death of Fatal Diseases in USA</title>
+      <link href="foundation.css" rel="stylesheet">
+      <script src="modernizr.js"></script>
+      <script type="text/javascript" src="d3.v3.min.js"></script>
+      <meta class="foundation-data-attribute-namespace">
+      <meta class="foundation-mq-xxlarge">
+      <meta class="foundation-mq-xlarge">
+      <meta class="foundation-mq-large">
+      <meta class="foundation-mq-medium">
+      <meta class="foundation-mq-small">
+      <link rel="stylesheet" type="text/css" href="jquery-ui.css">
+      <script type="text/javascript" src="jquery.min.js"></script>
+      <script type="text/javascript" src="jquery-ui.min.js"></script>
+      <link href="d3.parcoords.css" rel="stylesheet" type="text/css">
+	  
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Re-emerging Diseases via Project Tycho</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/InfoVizFinalProject/vizweb/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/InfoVizFinalProject/vizweb/style.css" rel="stylesheet">
+	  
+   </head>
+   <body >
+   
+   <div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Re-emerging Diseases: Whooping Cough</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+			  <li><a href="/InfoVizFinalProject/vizweb">HOME</a></li>
+			  
+			  <li><a href="/InfoVizFinalProject/vizweb/Time/time.html">TIMELINES</a></li>
+			  <li><a href="/InfoVizFinalProject/vizweb/cyctest/index.html">SEASONALITY</a></li>
+			  <li><a href="/InfoVizFinalProject/vizweb/Choropleth/Choropleth.html">CHOROPLETH</a></li>
+			  <li class="active"><a href="#">HEATMAP</a></li>
+			 </ul>
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h3>Re-emerging Diseases via Project Tycho</h3>
+		 
+		  <br/><br/><br/>
+		  
+		  <div class="hidden" id="tooltip" style="left: 1365px; top: 1333px;">
+         <p><span id="value">MASSACHUSETTS,1983<br>Total:8</span></p>
+      </div>
+      <div class="row">
+         <!-- <div class="text-center panel"> -->
+            <!-- <h2><strong>Overview</strong></h2> -->
+            <!-- <h4 class="subheader">Heatmap of 51 states of US against the -->
+               <!-- years -->
+            <!-- </h4> -->
+            <!-- <p>State with a higher contrast show that it has significantly -->
+               <!-- <strong>higher</strong> case count. Each cell shows the data for highlighted state and corresponding year -->
+            <!-- </p> -->
+            <!-- <br> -->
+            <!-- <p>Click any individual year or state to sort</p> -->
+         <!-- </div> -->
+         <div class="large-12 columns" id="chart"> </div>
+         
+      </div>
+      <style>
+         /* disable text selection */
+         svg *::selection {
+         background : transparent;
+         }
+         svg *::-moz-selection {
+         background:transparent;
+         } 
+         svg *::-webkit-selection {
+         background:transparent;
+         }
+         rect.selection {
+         stroke          : #333;
+         stroke-dasharray: 1px;
+         stroke-opacity  : 0.5;
+         fill            : transparent;
+         }
+         rect.cell-border {
+         stroke: #eee;
+         stroke-width:0.3px;   
+         }
+         rect.cell-selected {
+         stroke: rgb(51,102,153);
+         stroke-width:0.5px;   
+         }
+         rect.cell-hover {
+         stroke: #F00;
+         stroke-width:0.3px;   
+         }
+         text.mono {
+         font-size: 9pt;
+         font-family: Consolas, courier;
+         fill: #aaa;
+         }
+         text.text-selected {
+         fill: #000;
+         }
+         text.text-highlight {
+         fill: #c00;
+         }
+         text.text-hover {
+         fill: #00C;
+         }
+         #tooltip {
+         z-index: 10;
+         position: absolute;
+         width: 200px;
+         height: auto;
+         padding: 10px;
+         background-color: white !important;
+         -webkit-border-radius: 10px !important;
+         -moz-border-radius: 10px !important;
+         border-radius: 10px !important;
+         -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4) !important;
+         -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4) !important;
+         box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4) !important;
+         pointer-events: none !important;
+         }
+         #tooltip.hidden {
+         display: none !important;
+         }
+         #tooltip p {
+         margin: 0 !important;
+         font-family: sans-serif !important;
+         font-size: 12px !important;
+         line-height: 20px !important;
+         }
+      </style>
+      <script type="text/javascript">
+         var margin = { top: 170, right: 590, bottom: 50, left: 31 },
+             cellSize=20;
+			 col_number=51;
+             row_number=7;
+             width = cellSize*col_number, // - margin.left - margin.right,
+             height = cellSize*row_number , // - margin.top - margin.bottom,
+             legendElementWidth = cellSize*2.5,
+             colorBuckets = 21,
+            // colors = ['#005824','#1A693B','#347B53','#4F8D6B','#699F83','#83B09B','#9EC2B3','#B8D4CB','#D2E6E3','#EDF8FB','#FFFFFF','#F1EEF6','#E6D3E1','#DBB9CD','#D19EB9','#C684A4','#BB6990','#B14F7C','#A63467','#9B1A53','#91003F'];
+			 colors = ['#FFFAFA','#F4C2C2','#FF6961','#FF5C5C','#FF1C00','#FF0800','#FF0000','#CD5C5C','#E34234','#D73B3E','#CE1620','#CC0000','#B22222','#B31B1B','#A40000','#800000','#701C1C','#3C1414','#321414'];
+			//colors =  ['#f7fcfd','#e5f5f9','#ccece6','#99d8c9','#66c2a4','#41ae76','#238b45','#006d2c','#00441b'];
+             hcrow = [49,11,30,4,18,6,12,20,19,33,32,26,44,35,38,3,23,41,22,10,2,15,16,36,8,25,29,7,27,34,48,31,45,43,14,9,39,1,37,47,42,21,40,5,28,46,50,17,24,13],
+             hccol = [6,5,41,12,42,21,58,56,14,16,43,15,17,46,47,48,54,49,37,38,25,22,7,8,2,45,9,20,24,44,23,19,13,40,11,1,39,53,10,52,3,26,27,60,50,51,59,18,31,32,30,4,55,28,29,57,36,34,33,35],
+             colLabel = ['ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO','CONNECTICUT','DELAWARE','DISTRICT OF COLUMBIA','FLORIDA','GEORGIA','HAWAII','IDAHO','ILLINOIS','INDIANA','IOWA','KANSAS','KENTUCKY','LOUISIANA','MAINE','MARYLAND','MASSACHUSETTS','MICHIGAN','MINNESOTA','MISSISSIPPI','MISSOURI','MONTANA','NEBRASKA','NEVADA','NEW HAMPSHIRE','NEW JERSEY','NEW MEXICO','NEW YORK','NORTH CAROLINA','NORTH DAKOTA','OHIO','OKLAHOMA','OREGON','PENNSYLVANIA','RHODE ISLAND','SOUTH CAROLINA','SOUTH DAKOTA','TENNESSEE','TEXAS','UTAH','VERMONT','VIRGINIA','WASHINGTON','WEST VIRGINIA','WISCONSIN','WYOMING'], // change to gene name or probe id
+			 rowLabel = ['1940', '1950', '1970', '1980', '1990', '2000', '2010'];
+             d3.tsv("data_heatmap.tsv",
+             function(d) {
+             return {
+             row:   +d.col_idx,
+             col:   +d.row_idx,
+             value: +d.log2ratio
+             };
+             },
+			 
+			 
+             function(error, data) {
+                  
+		// var p = d3.scale.category10().range();
+	/*	 var c = d3.rgb("red")
+		  p = [c.darker().toString(), // "#a65ba6"
+c.darker(2).toString(), // "#743f74" - even darker
+c.brighter().toString(),// "ffb9ff"
+c.brighter(0.1).toString(), // "#f686f6" - only slightly brighter
+c.hsl(), // d3_Hsl object
+c.hsl().toString()];*/
+		// var colorScale = d3.scale.ordinal().range(p); 
+		 
+		
+		
+		    var colorScale = d3.scale.quantile()
+               .domain([ 0 , 160000])
+               .range(colors);
+			  
+			  
+			   
+             var svg = d3.select("#chart").append("svg")
+               .attr("width", width + margin.left + margin.right)
+               .attr("height", height + margin.top + margin.bottom)
+               .append("g")
+               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+               
+               
+             var rowSortOrder=false;
+             var colSortOrder=false;
+             var rowLabels = svg.append("g")
+               .selectAll(".rowLabelg")
+               .data(rowLabel)
+               .enter()
+               .append("text")
+               .text(function (d) { return d; })
+               .attr("x", 0)
+               .attr("y", function (d, i) { return (i+1) * cellSize; })
+               .style("text-anchor", "end")
+               .attr("transform", "translate(-6," + cellSize / 1.5 + ")")
+               .attr("class", function (d,i) { return "rowLabel mono r"+i;} ) 
+               .on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
+               .on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
+               .on("click", function(d,i) {rowSortOrder=!rowSortOrder; sortbylabel("r",i,rowSortOrder);
+				//d3.select("#order").property("selectedIndex", 4).node().focus();;
+				})
+                .filter(function(d){ return typeof(d) == "string"; })
+                .style("cursor", "pointer");
+              
+                   
+             var colLabels = svg.append("g")
+               .selectAll(".colLabelg")
+               .data(colLabel)
+               .enter()
+               .append("text")
+               .text(function (d) { return d; })
+               .attr("x", 0)
+               .attr("y", function (d, i) {  return (i+1)  * cellSize; })
+               .style("text-anchor", "left")
+               .attr("transform", "translate("+cellSize/2 + ",-6) rotate (-90)")
+               .attr("class",  function (d,i) { return "colLabel mono c"+i;} )       
+               .on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
+               .on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
+               .on("click", function(d,i) {colSortOrder=!colSortOrder;  sortbylabel("c",i,colSortOrder);d3.select("#order").property("selectedIndex", 4).node().focus();;});
+         	
+             var heatMap = svg.append("g").attr("class","g3")
+                 .selectAll(".cellg")
+                 .data(data,function(d){return d.row+":"+d.col;})
+                 .enter()
+                 .append("rect")
+                 .attr("x", function(d) { return d.col * cellSize; })
+                 .attr("y", function(d) { return d.row * cellSize; })
+                 .attr("class", function(d){return "cell cell-border cr"+(d.row-1)+" cc"+(d.col-1);})
+                 .attr("width", cellSize)
+                 .attr("height", cellSize)
+                 .style("fill", function(d) { return colorScale(d.value); })
+                 .on("mouseover", function(d){
+                        //highlight text
+                        d3.select(this).classed("cell-hover",true);
+                        d3.selectAll(".rowLabel").classed("text-highlight",function(r,ri){ return ri==(d.row-1);});
+                        d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==(d.col-1);});
+                 
+                        //Update the tooltip position and value
+                        d3.select("#tooltip")
+                          .style("left", (d3.event.pageX+10) + "px")
+                          .style("top", (d3.event.pageY-10) + "px")
+                          .select("#value")
+                          .html(rowLabel[d.row-1]+","+colLabel[d.col-1]+"<br />" + "Total:"+d.value);  
+                        //Show the tooltip
+                        d3.select("#tooltip").classed("hidden", false);
+                 })
+                 .on("mouseout", function(){
+                        d3.select(this).classed("cell-hover",false);
+                        d3.selectAll(".rowLabel").classed("text-highlight",false);
+                        d3.selectAll(".colLabel").classed("text-highlight",false);
+                        d3.select("#tooltip").classed("hidden", true);
+                 });
+                 
+                 
+             // Change ordering of cells
+         
+             function sortbylabel(rORc,i,sortOrder){
+                var t = svg.transition().duration(3000);
+                var log2r=[];
+                var sorted; // sorted is zero-based index
+                d3.selectAll(".c"+rORc+i) 
+                  .filter(function(ce){
+                     log2r.push(ce.value);
+                   })
+                ;
+                if(rORc=="r"){ // sort log2ratio of a gene
+                  sorted=d3.range(col_number).sort(function(a,b){ if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
+                  t.selectAll(".cell")
+                    .attr("x", function(d) { return sorted.indexOf(d.col-1) * cellSize; })
+                    ;
+                  t.selectAll(".colLabel")
+                   .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
+                  ;
+                }else{ // sort log2ratio of a contrast
+                  sorted=d3.range(row_number).sort(function(a,b){if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
+                  t.selectAll(".cell")
+                    .attr("y", function(d) { return sorted.indexOf(d.row-1) * cellSize; })
+                    ;
+                  t.selectAll(".rowLabel")
+                   .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
+                  ;
+                }
+             }
+         
+             d3.select("#order").on("change",function(){
+             order(this.value);
+             });
+         
+             function order(value){
+         	
+             if(value=="hclust"){
+             var t = svg.transition().duration(3000);
+             t.selectAll(".cell")
+               .attr("x", function(d) { return hccol.indexOf(d.col) * cellSize; })
+               .attr("y", function(d) { return hcrow.indexOf(d.row) * cellSize; })
+               ;
+         
+             t.selectAll(".rowLabel")
+               .attr("y", function (d, i) { return hcrow.indexOf(i+1) * cellSize; })
+               ;
+         
+             t.selectAll(".colLabel")
+               .attr("y", function (d, i) { return hccol.indexOf(i+1) * cellSize; })
+               ;
+         
+             }else if (value=="probecontrast"){
+             var t = svg.transition().duration(3000);
+             t.selectAll(".cell")
+               .attr("x", function(d) { return (d.col - 1) * cellSize; })
+               .attr("y", function(d) { return (d.row - 1) * cellSize; })
+               ;
+         
+             t.selectAll(".rowLabel")
+               .attr("y", function (d, i) { return i * cellSize; })
+               ;
+         
+             t.selectAll(".colLabel")
+               .attr("y", function (d, i) { return i * cellSize; })
+               ;
+         
+             }else if (value=="probe"){
+             var t = svg.transition().duration(3000);
+             t.selectAll(".cell")
+               .attr("y", function(d) { return (d.row - 1) * cellSize; })
+               ;
+         
+             t.selectAll(".rowLabel")
+               .attr("y", function (d, i) { return i * cellSize; })
+               ;
+             }else if (value=="contrast"){
+             var t = svg.transition().duration(3000);
+             t.selectAll(".cell")
+               .attr("x", function(d) { return (d.col - 1) * cellSize; })
+               ;
+             t.selectAll(".colLabel")
+               .attr("y", function (d, i) { return i * cellSize; })
+               ;
+             }
+             }
+             // 
+             var sa=d3.select(".g3")
+               .on("mousedown", function() {
+                   if( !d3.event.altKey) {
+                      d3.selectAll(".cell-selected").classed("cell-selected",false);
+                      d3.selectAll(".rowLabel").classed("text-selected",false);
+                      d3.selectAll(".colLabel").classed("text-selected",false);
+                   }
+                  var p = d3.mouse(this);
+                  sa.append("rect")
+                  .attr({
+                      rx      : 0,
+                      ry      : 0,
+                      class   : "selection",
+                      x       : p[0],
+                      y       : p[1],
+                      width   : 1,
+                      height  : 1
+                  })
+               })
+               .on("mousemove", function() {
+                  var s = sa.select("rect.selection");
+               
+                  if(!s.empty()) {
+                      var p = d3.mouse(this),
+                          d = {
+                              x       : parseInt(s.attr("x"), 10),
+                              y       : parseInt(s.attr("y"), 10),
+                              width   : parseInt(s.attr("width"), 10),
+                              height  : parseInt(s.attr("height"), 10)
+                          },
+                          move = {
+                              x : p[0] - d.x,
+                              y : p[1] - d.y
+                          }
+                      ;
+               
+                      if(move.x < 1 || (move.x*2<d.width)) {
+                          d.x = p[0];
+                          d.width -= move.x;
+                      } else {
+                          d.width = move.x;       
+                      }
+               
+                      if(move.y < 1 || (move.y*2<d.height)) {
+                          d.y = p[1];
+                          d.height -= move.y;
+                      } else {
+                          d.height = move.y;       
+                      }
+                      s.attr(d);
+               
+                          // deselect all temporary selected state objects
+                      d3.selectAll('.cell-selection.cell-selected').classed("cell-selected", false);
+                      d3.selectAll(".text-selection.text-selected").classed("text-selected",false);
+         
+                      d3.selectAll('.cell').filter(function(cell_d, i) {
+                          if(
+                              !d3.select(this).classed("cell-selected") && 
+                                  // inner circle inside selection frame
+                              (this.x.baseVal.value)+cellSize >= d.x && (this.x.baseVal.value)<=d.x+d.width && 
+                              (this.y.baseVal.value)+cellSize >= d.y && (this.y.baseVal.value)<=d.y+d.height
+                          ) {
+               
+                              d3.select(this)
+                              .classed("cell-selection", true)
+                              .classed("cell-selected", true);
+         
+                              d3.select(".r"+(cell_d.row-1))
+                              .classed("text-selection",true)
+                              .classed("text-selected",true);
+         
+                              d3.select(".c"+(cell_d.col-1))
+                              .classed("text-selection",true)
+                              .classed("text-selected",true);
+                          }
+                      });
+                  }
+               })
+               .on("mouseup", function() {
+                     // remove selection frame
+                  sa.selectAll("rect.selection").remove();
+               
+                      // remove temporary selection marker class
+                  d3.selectAll('.cell-selection').classed("cell-selection", false);
+                  d3.selectAll(".text-selection").classed("text-selection",false);
+               })
+               .on("mouseout", function() {
+                  if(d3.event.relatedTarget.tagName=='html') {
+                          // remove selection frame
+                      sa.selectAll("rect.selection").remove();
+                          // remove temporary selection marker class
+                      d3.selectAll('.cell-selection').classed("cell-selection", false);
+                      d3.selectAll(".rowLabel").classed("text-selected",false);
+                      d3.selectAll(".colLabel").classed("text-selected",false);
+                  }
+               })
+               ;
+               
+             function add() {
+         
+         
+             };
+             });
+      </script>
+   </body>
+   <svg width="960" height="500"></svg>
+   <!--<script src="//d3js.org/d3.v3.min.js"></script>-->
+   <!-- <script src="json2.js"></script> -->
+         
+	 
+	<br/>
+      </div>
+
+    </div>
+</div>
+   
+      
+</html>

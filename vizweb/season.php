@@ -78,6 +78,10 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	
+	<div>
+	<link rel="import" href="cyctest/index.html">
+	</div>
     
   </body>
 </html>

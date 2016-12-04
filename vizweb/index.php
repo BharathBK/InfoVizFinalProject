@@ -48,11 +48,12 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="data.php">EXPLORE DATA</a></li>
-			  <li class="active"><a href="time.php">TIMELINES</a></li>
-			  <li class="active"><a href="season.php">SEASONALITY</a></li>
-			  <li class="active"><a href="choropleth.php">CHOROPLETH</a></li>
-			  <li class="active"><a href="wordcloud.php">WORDCLOUD</a></li>
+			  <li class="active"><a href="/InfoVizFinalProject/vizweb">HOME</a></li>
+			  
+			  <li><a href="./Time/time.html">TIMELINES</a></li>
+			  <li><a href="./cyctest/index.html">SEASONALITY</a></li>
+			  <li><a href="./Choropleth/Choropleth.html">CHOROPLETH</a></li>
+			  <li><a href="./Heat_Map/heat_map.html">HEATMAP</a></li>
 			 </ul>
         </div><!--/.container-fluid -->
       </nav>

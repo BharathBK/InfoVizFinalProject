@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Circular Heat Chart about Frequence of UFO occurrence</title>
+        <meta charset="UTF-8">
+        
+         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		 
+		 <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Re-emerging Diseases via Project Tycho</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/InfoVizFinalProject/vizweb/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/InfoVizFinalProject/vizweb/style.css" rel="stylesheet">
+
+    </head>
+   
+   <body>
+   
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Re-emerging Diseases: Whooping Cough</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+			  <li><a href="/InfoVizFinalProject/vizweb">HOME</a></li>
+              
+			  <li><a href="/InfoVizFinalProject/vizweb/Time/time.html">TIMELINES</a></li>
+			  <li class="active"><a href="#">SEASONALITY</a></li>
+			  <li><a href="/InfoVizFinalProject/vizweb/Choropleth/Choropleth.html">CHOROPLETH</a></li>
+			  <li><a href="/InfoVizFinalProject/vizweb/Heat_Map/heat_map.html">HEATMAP</a></li>
+			 </ul>
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h3>Re-emerging Diseases via Project Tycho</h3>
+		 
+		  <br/>
+		  
+		   <script src="/InfoVizFinalProject/vizweb/js/circularHeatChart.js" charset="utf-8"></script>
+        <script src="/InfoVizFinalProject/vizweb/js/d3.v3.min.js" charset="utf-8"></script>
+        
+		<h3>Whooping Cough </h3>
+		<div id="chart1" ></div>
+        <div id="info1">Put mouse over image to check value</div> </br>
+		
+		
+		<h3>Whooping Cough Short</h3>
+		<div id="chartend" ></div>
+        <div id="infoend">Put mouse over image to check value</div> </br>
+        
+		
+		<h3>Whooping Cough Short</h3>
+        <div id="chartshort" ></div>
+        <div id="infoshort">Put mouse over image to check value</div> </br>
+        
+        <script>
+		
+		d3.json('/InfoVizFinalProject/vizweb/json/wcdata_end.json', function(wcEnd) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(20)
+                    .innerRadius(20)
+                    .numSegments(12)
+					.range(['white', '#990000'])
+                    .radialLabels(["1970", "1980", "1990", "2000", "2010"])
+                    .segmentLabels(months);
+					
+                d3.select('#chartend')
+                    .selectAll('svg')
+                    .data([wcEnd.data])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "300px")
+					.style("height", "300px");
+                d3.selectAll("#chartend path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#infoend").text(d1.month +'/' +d1.year +' has value ' + d1.number);
+                });
+            });
+            d3.json('/InfoVizFinalProject/vizweb/json/wcdata.json', function(wcData) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                //var years = ["1920", "1930", "1940", "1950", "1970", "1980", "1990", "2000", "2010"];
+               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.val2;})
+                    .segmentHeight(20)
+                    .innerRadius(20)
+                    .numSegments(12)
+					.domain([0,20])
+                    .range(['white', '#990000'])
+                    .radialLabels(["1920", "1930", "1940", "1950", "1970", "1980", "1990", "2000", "2010"])
+                    .segmentLabels(months);
+					
+                d3.select('#chart1')
+                    .selectAll('svg')
+                    .data([wcData.data])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "480px")
+					.style("height", "450px");
+                d3.selectAll("#chart1 path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#info1").text(d1.month +'/' +d1.year +' has value ' + d1.number);
+                });
+            });
+			
+			d3.json('/InfoVizFinalProject/vizweb/json/wcdatashort.json', function(wcshortData) {
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                //var years = ["1920", "1930", "1940", "1950", "1970", "1980", "1990", "2000", "2010"];
+               
+                var chart1 = circularHeatChart()
+                    .accessor(function(d1) {return d1.number;})
+                    .segmentHeight(30)
+                    .innerRadius(20)
+                    .numSegments(12)
+					.range(['white', '#990000'])
+                    .radialLabels([ "1930", "1940", "1950"])
+                    .segmentLabels(months);
+					
+                d3.select('#chartshort')
+                    .selectAll('svg')
+                    .data([wcshortData.data])
+                    .enter()
+                    .append('svg')
+                    .call(chart1)
+					.style("width", "250px")
+					.style("height", "280px");
+                d3.selectAll("#chartshort path").on('mouseover', function() {
+                    var d1 = d3.select(this).data()[0];
+                    d3.select("#infoshort").text(d1.month +'/' +d1.year +' has value ' + d1.number);
+                });
+            });
+		
+        </script>
+		
+		 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="/InfoVizFinalProject/vizweb/js/bootstrap.min.js"></script>
+         
+	 
+	<br/>
+      </div>
+
+    </div>
+</div>
+      
+       
+        
+    </body>
+</html>
