@@ -1,0 +1,199 @@
+<<!DOCTYPE HTML>
+<!--
+	Linear by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Linear by TEMPLATED</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,500,900' rel='stylesheet' type='text/css'>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-panels.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel-noscript.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
+		
+		<script src="js/d3.v3.min.js"></script>
+   <script src="js/d3.layout.cloud.js"></script>
+ 
+   
+  
+   <link rel="stylesheet" type="text/css" href="css/d3.parcoords.css">
+   <!--<script type="text/javascript" src="normalwordcloud.js"></script>-->
+   
+     <link href="css/foundation.css" rel="stylesheet">
+    <script src="js/modernizr.js"></script>
+	
+	
+	<script type="text/javascript" src="js/d3.v3.min.js"></script>
+	<script type="text/javascript" src="js/sylvester.js"></script>
+	<script type="text/javascript" src="js/underscore.js"></script> 
+	<script type="text/javascript" src="js/underscore.math.js"></script>
+	<script type="text/javascript" src="js/d3.parcoords.js"></script>
+    
+	
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+		
+		<style>
+      /*.axis--x path {
+      display: none;
+      }*/
+      .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+      }
+      #title{
+      float: none;
+      font-size: 19px;
+      margin-top: 2%;
+      margin-bottom: -16px;
+      margin-left: 11%;
+      }
+   </style>
+		
+	</head>
+	<body>
+
+	<!-- Header -->
+		<div id="header">
+			<div id="nav-wrapper"> 
+				<!-- Nav -->
+				<nav id="nav">
+					<ul>
+						<li class = "active"><a href="index.html">Home</a></li>
+						<li><a href="time.html">TIMELINES</a></li>
+						<li><a href="Choropleth.html">CHOROPLETH</a></li>
+						<li><a href="heat_map.html">HEATMAP</a></li>
+						<li><a href="cyctest.html">Circular Heatmap</a></li>
+						<li><a href="wordcloud.html">Word Cloud</a></li>
+						<li><a href="parallel.html">Parallel axis</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="container"> 
+				
+				<!-- Logo -->
+				<div id="logo">
+					<h1><a href="#">VIZEASES</a></h1>
+					<span class="tag">Re-emergance of Whooping Cough</span>
+				</div>
+			</div>
+		</div>
+	<!-- Header --> 
+
+	<!-- Main -->
+		<div id="main">
+			<div id="content" class="container">
+				<section>
+					<header>
+						<h2>Parallel Axis</h2>
+						<span class="byline">Whooping Cough by Month</span>
+					</header>
+					
+					<div class="row">
+        
+
+        <div class="large-12 columns">
+            <div class="parcoords" id="example-progressive" style="width:1300px;margin-left:-200px;height:450px;"></div>
+        </div>
+		<hr>
+    </div>
+      <form>
+         <input type="hidden" id="textBox"/>
+      </form>
+      <svg width="960" height="500"></svg>
+     <!-- <script src="//d3js.org/d3.v4.min.js"></script>-->
+      <!-- <script src="json2.js"></script> -->
+
+   </body>
+         <script>
+        
+      var pc_progressive;
+
+    // load csv file and create the chart
+    d3.csv('csv/Parallel.csv', function(data) {
+    var colorgen = d3.scale.category20();
+    var colors = {};
+    _(data).chain()
+    .pluck('group')
+    .uniq()
+    .each(function(d,i) {
+      colors[d] = colorgen(i);
+    });
+
+    var color = function(d) { return colors[d.group]; };
+
+    pc_progressive = d3.parcoords()("#example-progressive")
+    .data(data)
+    .color(color)
+    .alpha(0.4)
+    .margin({ top: 24, left: 150, bottom: 12, right: 0 })
+    .mode("queue")
+    .render()
+    .brushMode("1D-axes")  // enable brushing
+    .interactive()  // command line mode
+
+    pc_progressive.svg.selectAll("text")
+    .style("font", "10px sans-serif");
+    });
+    
+      </script>
+					
+					
+</div>
+</section>
+					</div>
+
+					<!-- Sidebar -->
+					
+					
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	<!-- Tweet -->
+		
+	<!-- /Tweet -->
+
+	<!-- Footer -->
+		<div id="footer">
+			<div class="container">
+				<section>
+					<header>
+						<h2>Contributors</h2>
+						
+					
+					<ul class="byline">
+						<li><span>Venkatesh Duvvuri</span></li>
+						<li><span>BharathKumar Inbasekaran</span></li>
+						<li><span>Setareh Sarachi</span></li>
+						<li><span>Sarah Vinski</span></li>
+					</ul>
+					</header>
+				</section>
+			</div>
+		</div>
+	<!-- /Footer -->
+
+	<!-- Copyright -->
+		<div id="copyright">
+			<div class="container">
+				Design: <a href="http://templated.co">TEMPLATED</a> Images: <a href="http://unsplash.com">Unsplash</a> (<a href="http://unsplash.com/cc0">CC0</a>)
+			</div>
+		</div>
+
+
+	</body>
+</html>
