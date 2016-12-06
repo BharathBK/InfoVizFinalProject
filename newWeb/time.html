@@ -92,11 +92,13 @@
 				<!-- Nav -->
 				<nav id="nav">
 					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li class = "active"><a href="time.html">TIMELINES</a></li>
-						<li><a href="cyctest.html">SEASONALITY</a></li>
+						<li class = "active"><a href="index.html">Home</a></li>
+						<li><a href="time.html">TIMELINES</a></li>
 						<li><a href="Choropleth.html">CHOROPLETH</a></li>
 						<li><a href="heat_map.html">HEATMAP</a></li>
+						<li><a href="cyctest.html">Circular Heatmap</a></li>
+						<li><a href="wordcloud.html">Word Cloud</a></li>
+						<li><a href="parallel.html">Parallel axis</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -104,8 +106,8 @@
 				
 				<!-- Logo -->
 				<div id="logo">
-					<h1><a href="#">Linear</a></h1>
-					<span class="tag">By TEMPLATED</span>
+					<h1><a href="#">VIZEASES</a></h1>
+					<span class="tag">Re-emergance of Whooping Cough</span>
 				</div>
 			</div>
 		</div>
@@ -116,12 +118,16 @@
 			<div id="content" class="container">
 				<section>
 					<header>
-						<h2>No Sidebar</h2>
-						<span class="byline">Integer sit amet pede vel arcu aliquet pretium</span>
+						<h2>Exploratory Timeline</h2>
+						
 					</header>
 					
+					<p>
+					To use the timeline above, you can click on the boxes to the right of the graph. Data for more than one state can be selected. Keep in mind that keeping "ALL" checked will skew the graph because it included much more data than any one state. Clicking and dragging on the bar below the timeline will filter the graph to only show the selected time period. The selected area can also be slid along the timeline. Here are a few dates of interest: 1945-1960 – World-wide vaccination with whole cell vaccine is started. 1949 - Diphtheria and tetanus toxoids and pertussis (DTP) vaccine was licensed. 1965-1977 - Development of an acellular vaccine takes place 1991 through the 1990s – an acellular versions of the vaccine was released. 1998 – Andrew Wakefield's fraudulent article linking between the administration of the measles, mumps and rubella (MMR) vaccine, with autism and bowel disease was published. This triggered the anti-vaccine movement. 2006 – Scheduled re-vaccination of adults is implemented in the USA
+					</p>
+					
 					<script src="http://d3js.org/d3.v3.js"></script>
-					<div id = "time" class = "plain"></div>
+					<div id = "time" class = "plain" align = "center"></div>
 <script>
 
 var margin = {top: 20, right: 200, bottom: 100, left: 50},
@@ -389,7 +395,8 @@ d3.csv("csv/column_data.csv", function(error, data) {
         .attr("class", "tooltip")
         .attr("x", width + 20) // position tooltips  
         .attr("y", function (d, i) { return (legendSpace)+i*(legendSpace); }); // (return (11.25/2 =) 5.625) + i * (5.625) // position tooltips       
-
+		//.attr("y", 20);
+		
   // Add mouseover events for hover line.
   d3.select("#mouse-tracker") // select chart plot background rect #mouse-tracker
   .on("mousemove", mousemove) // on mousemove activate mousemove function defined below
@@ -476,8 +483,18 @@ d3.csv("csv/column_data.csv", function(error, data) {
   }
 
 </script>
+<br></br>
 
-<div id="chartContainer" class = "plain">
+<header>
+						<h2>Timeseries</h2>
+						
+					</header>
+					
+					<p>
+					The time series above shows the trend of whooping cough occurrence by decade. Hovering over a timepoint will give you the exact number of cases. Notice how the number of cases severely drops from the peak 1940s to the 1960s. An increase can be seen again in the 1990s and an even larger increase begins in the 2010s.
+					</p>
+
+<div id="chartContainer" class = "plain" align = "center">
   <script src="js/d3.v3.4.8.js"></script>
   <script src="js/dimple.v2.2.0.min.js"></script>
   <script type="text/javascript">
@@ -518,15 +535,16 @@ d3.csv("csv/column_data.csv", function(error, data) {
 			<div class="container">
 				<section>
 					<header>
-						<h2>Get in touch</h2>
-						<span class="byline">Integer sit amet pede vel arcu aliquet pretium</span>
-					</header>
-					<ul class="contact">
-						<li><a href="#" class="fa fa-twitter"><span>Twitter</span></a></li>
-						<li class="active"><a href="#" class="fa fa-facebook"><span>Facebook</span></a></li>
-						<li><a href="#" class="fa fa-dribbble"><span>Pinterest</span></a></li>
-						<li><a href="#" class="fa fa-tumblr"><span>Google+</span></a></li>
+						<h2>Contributors</h2>
+						
+					
+					<ul class="byline">
+						<li><span>Venkatesh Duvvrui</span></li>
+						<li><span>BharathKumar Inbasekaran</span></li>
+						<li><span>Setareh Sarachi</span></li>
+						<li><span>Sarah Vinski</span></li>
 					</ul>
+					</header>
 				</section>
 			</div>
 		</div>
