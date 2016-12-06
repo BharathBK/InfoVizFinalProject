@@ -6,14 +6,14 @@
 -->
 <html>
 	<head>
-		<title>Linear by TEMPLATED</title>
+		<title>VIZEASES</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,500,900' rel='stylesheet' type='text/css'>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="js/skel.min.js"></script>
-		<script src="js/skel-panels.min.js"></script>
+		<!--<script src="js/skel-panels.min.js"></script>-->
 		<script src="js/init.js"></script>
 		<noscript>
 			<link rel="stylesheet" href="css/skel-noscript.css" />
@@ -92,13 +92,14 @@
 				<!-- Nav -->
 				<nav id="nav">
 					<ul>
-						<li class = "active"><a href="index.html">Home</a></li>
+						<li class = "active"><a href="home.html">Home</a></li>
 						<li><a href="time.html">TIMELINES</a></li>
 						<li><a href="Choropleth.html">CHOROPLETH</a></li>
 						<li><a href="heat_map.html">HEATMAP</a></li>
 						<li><a href="cyctest.html">Circular Heatmap</a></li>
-						<li><a href="wordcloud.html">Word Cloud</a></li>
 						<li><a href="parallel.html">Parallel axis</a></li>
+						<li><a href="wordcloud.html">Word Cloud</a></li>
+						
 					</ul>
 				</nav>
 			</div>
@@ -117,6 +118,35 @@
 		<div id="main">
 			<div id="content" class="container">
 				<section>
+				<header>
+				<h2>Timeseries</h2>
+						
+					</header>
+					
+					<p>
+					The time series above shows the trend of whooping cough occurrence by decade. Hovering over a timepoint will give you the exact number of cases. Notice how the number of cases severely drops from the peak 1940s to the 1960s. An increase can be seen again in the 1990s and an even larger increase begins in the 2010s.
+					</p>
+
+<div id="chartContainer" class = "plain" align = "center">
+  <script src="js/d3.v3.4.8.js"></script>
+  <script src="js/dimple.v2.2.0.min.js"></script>
+  <script type="text/javascript">
+    var svg1 = dimple.newSvg("#chartContainer", 590, 400);
+    d3.tsv("tsv/WhoopingCoughDecadeMonth.tsv", function (data) {
+     // data = dimple.filterData(data, "Owner", ["Aperture", "Black Mesa"])
+      var myChart = new dimple.chart(svg1, data);
+      myChart.setBounds(60, 30, 505, 305);
+      var x = myChart.addCategoryAxis("x", "Year");
+      x.addOrderRule("month");
+      myChart.addMeasureAxis("y", "Cases");
+      var s = myChart.addSeries("Whooping Cough", dimple.plot.line);
+      s.interpolation = "cardinal";
+	  s.lineMarkers = true;
+      myChart.addLegend(60, 10, 500, 20, "right");
+      myChart.draw();
+    });
+  </script>
+</div>
 					<header>
 						<h2>Exploratory Timeline</h2>
 						
@@ -486,34 +516,7 @@ d3.csv("csv/column_data.csv", function(error, data) {
 <br></br>
 
 <header>
-						<h2>Timeseries</h2>
 						
-					</header>
-					
-					<p>
-					The time series above shows the trend of whooping cough occurrence by decade. Hovering over a timepoint will give you the exact number of cases. Notice how the number of cases severely drops from the peak 1940s to the 1960s. An increase can be seen again in the 1990s and an even larger increase begins in the 2010s.
-					</p>
-
-<div id="chartContainer" class = "plain" align = "center">
-  <script src="js/d3.v3.4.8.js"></script>
-  <script src="js/dimple.v2.2.0.min.js"></script>
-  <script type="text/javascript">
-    var svg1 = dimple.newSvg("#chartContainer", 590, 400);
-    d3.tsv("tsv/WhoopingCoughDecadeMonth.tsv", function (data) {
-     // data = dimple.filterData(data, "Owner", ["Aperture", "Black Mesa"])
-      var myChart = new dimple.chart(svg1, data);
-      myChart.setBounds(60, 30, 505, 305);
-      var x = myChart.addCategoryAxis("x", "Year");
-      x.addOrderRule("month");
-      myChart.addMeasureAxis("y", "Cases");
-      var s = myChart.addSeries("Whooping Cough", dimple.plot.line);
-      s.interpolation = "cardinal";
-	  s.lineMarkers = true;
-      myChart.addLegend(60, 10, 500, 20, "right");
-      myChart.draw();
-    });
-  </script>
-</div>
 
 </section>
 					</div>
