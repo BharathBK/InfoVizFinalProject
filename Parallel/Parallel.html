@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+   <head> 
+   <script src="d3.v3.min.js"></script>
+   <script src="d3.layout.cloud.js"></script>
+ 
+   
+  
+   <link rel="stylesheet" type="text/css" href="d3.parcoords.css">
+   <!--<script type="text/javascript" src="normalwordcloud.js"></script>-->
+   
+     <link href="foundation.css" rel="stylesheet">
+    <script src="modernizr.js"></script>
+	
+	
+	<script type="text/javascript" src="d3.v3.min.js"></script>
+	<script type="text/javascript" src="sylvester.js"></script>
+	<script type="text/javascript" src="underscore.js"></script> 
+	<script type="text/javascript" src="underscore.math.js"></script>
+	<script type="text/javascript" src="d3.parcoords.js"></script>
+    <meta class="foundation-data-attribute-namespace">
+    <meta class="foundation-mq-xxlarge">
+    <meta class="foundation-mq-xlarge">
+    <meta class="foundation-mq-large">
+    <meta class="foundation-mq-medium">
+    <meta class="foundation-mq-small">
+	
+        <link rel="stylesheet" type="text/css" href="jquery-ui.css">
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="jquery-ui.min.js"></script>
+   </head>
+   
+   <style>
+      /*.axis--x path {
+      display: none;
+      }*/
+      .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+      }
+      #title{
+      float: none;
+      font-size: 19px;
+      margin-top: 2%;
+      margin-bottom: -16px;
+      margin-left: 11%;
+      }
+   </style>
+   <body>
+      
+    <div class="row">
+        <div class="text-center panel">
+            <h2><strong>Whooping Cough by Month</strong></h2>
+
+            <!--<h4 class="subheader">A look at how occurrence of measles varies
+            historically across the 12 months</h4>
+
+            <p>State with a higher contrast show that it has significantly
+            <strong>higher</strong> case count. The data shown is aggregated
+            case count from <strong>1928-2003</strong> per state</p>-->
+        </div>
+
+        <div class="large-12 columns">
+            <div class="parcoords" id="example-progressive" style="width:1300px;margin-left:-200px;height:450px;"></div>
+        </div>
+		<hr>
+    </div>
+      <form>
+         <input type="hidden" id="textBox"/>
+      </form>
+      <svg width="960" height="500"></svg>
+     <!-- <script src="//d3js.org/d3.v4.min.js"></script>-->
+      <!-- <script src="json2.js"></script> -->
+
+   </body>
+         <script>
+        
+      var pc_progressive;
+
+    // load csv file and create the chart
+    d3.csv('Parallel.csv', function(data) {
+    var colorgen = d3.scale.category20();
+    var colors = {};
+    _(data).chain()
+    .pluck('group')
+    .uniq()
+    .each(function(d,i) {
+      colors[d] = colorgen(i);
+    });
+
+    var color = function(d) { return colors[d.group]; };
+
+    pc_progressive = d3.parcoords()("#example-progressive")
+    .data(data)
+    .color(color)
+    .alpha(0.4)
+    .margin({ top: 24, left: 150, bottom: 12, right: 0 })
+    .mode("queue")
+    .render()
+    .brushMode("1D-axes")  // enable brushing
+    .interactive()  // command line mode
+
+    pc_progressive.svg.selectAll("text")
+    .style("font", "10px sans-serif");
+    });
+    
+      </script>
+   <html>
