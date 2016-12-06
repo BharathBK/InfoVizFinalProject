@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+   <head> </head>
+   <script src="d3.v3.min.js"></script>
+   <script src="d3.layout.cloud.js"></script>
+   <!--<script type="text/javascript" src="normalwordcloud.js"></script>-->
+   <style>
+      /*.axis--x path {
+      display: none;
+      }*/
+      .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+      }
+      #title{
+      float: none;
+      font-size: 19px;
+      margin-top: 2%;
+      margin-bottom: -16px;
+      margin-left: 11%;
+      }
+   </style>
+   <body>
+      <div id="wordclouddiv"></div>
+      <form>
+         <input type="hidden" id="textBox"/>
+      </form>
+      <svg width="960" height="500"></svg>
+      <script src="//d3js.org/d3.v4.min.js"></script>
+      <!-- <script src="json2.js"></script> -->
+      <script>
+        
+         document.getElementById("textBox").value = "whooping cough also known pertussis highly contagious disease characterized severe cough usually accompanied whooping sound caused bacteria spread close contact infected person coughs sneezes officials southwest nebraska public health department say re closely monitoring confirmed whooping cough cases across state help nebraska department health human services epidemiology office watching whooping cough cases closely said melissa propp rn departments surveillance nurse concern pertussis early stages appears nothing common cold often suspected diagnosed severe symptoms appear symptoms include vomiting coughing attack accompanied whoop sound red blue face extreme fatigue problems breathing symptoms may come quickly get worse months symptoms vary person person can deadly infants parents infants displaying symptoms take hospital immediately risk catching infection include babies year old children ages havent received seventhgrade vaccines adults havent vaccinated last five seven years tdap vaccine protects tetanus diphtheria pertussis date vaccines especially important families caregivers new infants propp said official reports whooping cough lincoln county according west central district health department may cases surrounding counties although many people like know exact counties communities dealing whooping cough nebraska law allow us disclose counties human cases population less residents explained southwest director myra stoney protect confidentiality residents dealing pertussis west central district health department serves lincoln logan mcpherson thomas hooker arthur counties information call visit facebookcomwcdhd southwest nebraska public health department serves chase dundy frontier furnas hayes hitchcock keith perkins red willow counties information call visit facebookcomswnphd", "tdap shots educational materials available either health department article mulvane school district warning parents whooping cough case mulvane high school whooping cough also known pertussis highly contagious disease spread air s preventable vaccines treatable antibioticsmulvane schools posted notice online reported whooping cough case warning specify person infected student teacher staff member warning called parents make sure children uptodate immunizations also said illness starts gradual cough develops spasm fitful sudden coughing many coughs occur together making hard breathe causing whooping sound may clear thick mucus air passages may cause gagging vomiting pertussis immunization called dtap sedgwick county health department offers information whooping cough immunizations three san juan island children diagnosed pertussis whooping cough san juan county health community services currently working families children investigate pertussis cases none children hospitalized pertussis highly contagious bacterial infection one common vaccinepreventable diseases united states usually starts mild cold symptoms cough turns severe coughing spells infants children can cough violently rapidly can cause inhale loud whooping sound untreated infected person can spread pertussis several weeks pertussis highly contagious pertussis outbreaks can occur even vaccinated populations though symptoms tend less severe even fully vaccinated people can become infected spread pertussis child symptoms pertussis please stay home away people public settings child evaluated health care provider best way protect pertussis receive vaccine according current vaccination guidelines effectiveness vaccine fades time requiring periodic booster vaccinations fully protected possible now good time individuals family members review vaccination records ensure immunizations date vaccinations date questions vaccinations pertussis please contact health care provider san juan county health community services weve made great strides modern public health easy take granted", "unfortunately old diseases like measles polio still around decades wiped perhaps mean centuries bubonic plague bacteria still detected squirrels california mountains whooping cough one disease pertussis earned common name whooping sound sufferers especially children make gasping air fit coughing prevented standard vaccination usually combination diptheria tetanus important keep children shots unfortunately cases reported area served southwest nebraska public health department prevented law disclosing exact counties affected population lower residents safe say however risk watching whooping cough cases closely said melissa propp rn swnphd surveillance nurse concern pertussis early stages appears nothing common cold often suspected diagnosed severe symptoms appear said challenges associated whooping cough severe coughs associated whooping cough can last weeks months usually sudden violent coughs teenagers adults may hard distinguish colds influenza flu whooping sound may present whooping cough easy underdiagnosed easily spread infants children infected people contagious two weeks cough begins whooping cough spread coughing sneezing close contact others breathe pertussis bacteria uptodate vaccines especially important families caregivers new infants propp said";
+            /*  var wordcountarray = [{
+                   "text": "How",
+                   "size": 90
+               }, {
+                   "text": "are",
+                   "size": 90
+               }, {
+                   "text": "you",
+                   "size": 90
+               }];
+         */
+         
+         var wordcountarray = [];
+         
+          function wordcount() {
+         
+                   /* Below is a regular expression that finds alphanumeric characters
+                      Next is a string that could easily be replaced with a reference to a form control
+                      Lastly, we have an array that will hold any words matching our pattern */
+                   var pattern = /\w+/g,
+                       //string = "I I am am am yes yes.",
+                       //string = area.value;
+				   string = document.getElementById("textBox").value;
+                   matchedWords = string.match(pattern);
+         
+                   /* The Array.prototype.reduce method assists us in producing a single value from an
+                      array. In this case, we're going to use it to output an object with results. */
+         
+                   var counts = matchedWords.reduce(function(stats, word) {
+         
+                       /* `stats` is the object that we'll be building up over time.
+                          `word` is each individual entry in the `matchedWords` array */
+                       if (stats.hasOwnProperty(word)) {
+                           /* `stats` already has an entry for the current `word`.
+                              As a result, let's increment the count for that `word`. */
+                           stats[word] = stats[word] + 1;
+                       } else {
+                           /* `stats` does not yet have an entry for the current `word`.
+                              As a result, let's add a new entry, and set count to 1. */
+                           stats[word] = 1;
+                       }
+         
+                       //	wordcountarray.push({"text" : word, "size" : stats[word]});
+         
+                       /* Because we are building up `stats` over numerous iterations,
+                          we need to return it for the next pass to modify it. */
+                       return stats;
+         
+                   }, {});
+         
+                   //alert(JSON.stringify(wordcountarray));
+                   /* Now that `counts` has our object, we can log it. */
+                   console.log(counts);
+                   return counts;
+               }
+         
+               var counts = wordcount();
+         	  
+         	  for(key in counts){
+         		wordcountarray.push({"text" : key, "size" : (counts[key])*10})
+         	  }
+         	  
+         
+         	var fill = d3.scale.category20();
+         
+         
+               var layout = d3.layout.cloud()
+                   .size([500, 500])
+                    /*.words([
+                      "Hello", "world", "normally", "you", "want", "more", "words",
+                      "than", "this"].map(function(d) {
+                      return {"text": d, "size": 10 + Math.random() * 90};
+                    }))*/
+                   .words(wordcountarray)
+                   .padding(5)
+                   .rotate(function() {
+                       return ~~(Math.random() * 2) * 90;
+                   })
+                   .font("Impact")
+                   .fontSize(function(d) {
+                       return d.size;
+                   })
+                   .on("end", draw);
+         
+               layout.start();
+         
+               function draw(words) {
+                   d3.select("#wordclouddiv").append("svg")
+                       .attr("width", layout.size()[0])
+                       .attr("height", layout.size()[1])
+                       .append("g")
+                       .attr("transform", "translate(" + (layout.size()[0] / 2) + "," + (layout.size()[1] / 2) + ")")
+                       .selectAll("text")
+                       .data(words)
+                       .enter().append("text")
+                       .style("font-size", function(d) {
+                           return d.size + "px";
+                       })
+                       .style("font-family", "Impact")
+                       .style("fill", function(d, i) {
+                           return fill(i);
+                       })
+                       .attr("text-anchor", "middle")
+                       .attr("transform", function(d) {
+                           return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                       })
+                       .text(function(d) {
+                           return d.text;
+                       });
+                }
+         	      
+      </script>
+   </body>
+   <html>
