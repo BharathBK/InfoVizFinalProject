@@ -139,7 +139,7 @@
      // data = dimple.filterData(data, "Owner", ["Aperture", "Black Mesa"])
       var myChart = new dimple.chart(svg1, data);
       myChart.setBounds(60, 30, 505, 305);
-      var x = myChart.addCategoryAxis("x", "Year");
+      var x = myChart.addCategoryAxis("x", "Decade");
       x.addOrderRule("month");
       myChart.addMeasureAxis("y", "Cases");
       var s = myChart.addSeries("Whooping Cough", dimple.plot.line);
